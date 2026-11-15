@@ -1,7 +1,9 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const voteBtns = document.querySelectorAll("#VoteBtn");
     const votelinkBtns = document.querySelectorAll("#VoteLinkBtn");
     const trailerVideo = document.getElementById("TrailerVideo");
+    const youtubeLink = "https://www.youtube.com/watch?v=zskd-IbuXxY";
 
     voteBtns.forEach((voteBtn) => {
         voteBtn.addEventListener("click", () => {
@@ -15,13 +17,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    trailerVideo.addEventListener("click", () => {
-        if (trailerVideo) {
-            trailerVideo.innerHTML = `<iframe src="https://www.youtube.com/embed/a50CCWSX7QI?autoplay=1"title="Bloxd Awards Trailer "allow="autoplay; encrypted-media; picture-in-picture"allowfullscreen> </iframe>`;
-        }
-    });
+    if (trailerVideo) {
+        trailerVideo.addEventListener("click", () => {
+            trailerVideo.innerHTML = `
+                <div id="youtube-player"></div>
+            `;
 
+            const script = document.createElement("script");
+            script.src = "https://www.youtube.com/iframe_api";
+            document.head.appendChild(script);
+
+            window.onYouTubeIframeAPIReady = function () {
+                new YT.Player("youtube-player", {
+                    videoId: "zskd-IbuXxY",
+                    playerVars: {
+                        autoplay: 1
+                    },
+                    events: {
+                        onError: function (event) {
+                            window.location.href = youtubeLink;
+                        }
+                    }
+                });
+            };
+        });
+    }
 });
+
 
 /* might not use this shit but is not like a countdown type bs until the day of the event  "Mr GEORGECR"
 const awardDate = new Date("2026-12-31T20:00:00+02:00").getTime();
